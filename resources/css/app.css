@@ -1,0 +1,113 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
+
+@theme inline {
+    --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    --color-canvas: var(--canvas);
+    --color-elevated: var(--elevated);
+    --color-ink: var(--ink);
+    --color-muted: var(--muted);
+    --color-line: var(--line);
+    --color-accent: var(--accent);
+}
+
+:root,
+.dark {
+    color-scheme: dark;
+    --canvas: #07090e;
+    --elevated: #12151c;
+    --ink: #f4f7fb;
+    --muted: #9aa3b5;
+    --line: rgba(255, 255, 255, 0.08);
+    --accent: #3b82f6;
+    --glow: rgba(59, 130, 246, 0.28);
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+body {
+    background-color: var(--canvas);
+    background-image:
+        radial-gradient(920px 460px at 88% -8%, var(--glow), transparent 62%),
+        radial-gradient(680px 380px at -12% 8%, var(--glow), transparent 58%);
+    color: var(--ink);
+}
+
+::placeholder {
+    color: color-mix(in srgb, var(--muted) 80%, transparent);
+}
+
+@layer components {
+    .surface {
+        background: var(--elevated);
+        border: 1px solid var(--line);
+        border-radius: 1.5rem;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        border-radius: 0.95rem;
+        padding: 0.8rem 1.15rem;
+        font-size: 0.95rem;
+        font-weight: 700;
+        line-height: 1.2;
+        transition: transform 160ms ease, background-color 160ms ease, border-color 160ms ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .btn-primary {
+        background: var(--accent);
+        color: white;
+    }
+
+    .btn-ghost {
+        border: 1px solid var(--line);
+        background: color-mix(in srgb, var(--elevated) 72%, transparent);
+        color: var(--ink);
+    }
+
+    .field {
+        width: 100%;
+        border-radius: 0.95rem;
+        border: 1px solid var(--line);
+        background: color-mix(in srgb, var(--canvas) 72%, var(--elevated));
+        color: var(--ink);
+        padding: 0.85rem 1rem;
+    }
+
+    .field:focus {
+        outline: 2px solid color-mix(in srgb, var(--accent) 75%, transparent);
+        outline-offset: 1px;
+    }
+
+    .kicker {
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--accent);
+    }
+}
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
+
+    body {
+        background: white;
+        color: black;
+    }
+}
