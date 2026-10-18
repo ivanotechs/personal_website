@@ -45,6 +45,7 @@ class Branding extends Page
 
         $setting->update($data);
         $this->saved = true;
+        $this->toast(__('site.toast.saved'));
         $this->js("localStorage.setItem('accent', ".json_encode($this->accent).'); document.documentElement.style.setProperty("--accent", '.json_encode($this->accent).');');
     }
 

@@ -15,6 +15,6 @@
         <label class="grid gap-2 text-sm font-semibold">New password<input class="field" type="password" wire:model="password" autocomplete="new-password"></label>
         <label class="grid gap-2 text-sm font-semibold">Confirm password<input class="field" type="password" wire:model="password_confirmation" autocomplete="new-password"></label>
         @error('password') <span class="text-sm text-red-500">{{ $message }}</span> @enderror
-        <button type="submit" class="btn btn-primary w-fit">{{ __('site.admin.save') }}</button>
+        <x-action-button type="submit" class="btn-primary w-fit" target="save">{{ __('site.admin.save') }}</x-action-button>
     </form>
 </div>

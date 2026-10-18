@@ -24,6 +24,7 @@ class Contact extends Page
     public function another(): void
     {
         $this->sent = false;
+        $this->toast(__('site.toast.contact_another'), 'info');
     }
 
     public function submit(): void
@@ -32,6 +33,7 @@ class Contact extends Page
 
         if (RateLimiter::tooManyAttempts($key, 5)) {
             $this->addError('message', __('site.contact.validation.throttle'));
+            $this->toast(__('site.contact.validation.throttle'), 'error');
 
             return;
         }
@@ -68,6 +70,7 @@ class Contact extends Page
         RateLimiter::hit($key, 3600);
         $this->reset('name', 'email', 'subject', 'message');
         $this->sent = true;
+        $this->toast(__('site.toast.contact_sent'));
     }
 
     protected function viewName(): string

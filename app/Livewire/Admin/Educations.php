@@ -37,14 +37,19 @@ class Educations extends Page
         $this->sort = (int) $item->sort;
         $this->title = array_merge(['en' => '', 'de' => '', 'fr' => ''], $item->title ?? []);
         $this->summary = array_merge(['en' => '', 'de' => '', 'fr' => ''], $item->summary ?? []);
+        $this->toast(__('site.toast.opened', ['name' => $item->text('title')]), 'info');
     }
 
-    public function createNew(): void
+    public function createNew(bool $silent = false): void
     {
         $this->reset(['editing', 'school', 'location', 'start_date', 'end_date', 'is_current']);
         $this->sort = (int) Education::query()->max('sort') + 1;
         $this->title = ['en' => '', 'de' => '', 'fr' => ''];
         $this->summary = ['en' => '', 'de' => '', 'fr' => ''];
+
+        if (! $silent) {
+            $this->toast(__('site.toast.created'), 'info');
+        }
     }
 
     public function save(): void
@@ -68,7 +73,8 @@ class Educations extends Page
             Education::query()->create($data);
         }
 
-        $this->createNew();
+        $this->createNew(true);
+        $this->toast(__('site.toast.saved'));
     }
 
     public function delete(int $id): void
@@ -76,8 +82,10 @@ class Educations extends Page
         Education::query()->whereKey($id)->delete();
 
         if ($this->editing === $id) {
-            $this->createNew();
+            $this->createNew(true);
         }
+
+        $this->toast(__('site.toast.deleted'));
     }
 
     protected function viewName(): string

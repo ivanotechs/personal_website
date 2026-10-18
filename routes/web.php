@@ -66,11 +66,13 @@ Route::prefix('{locale}')
                 Route::get('/projects/{project}/edit', ProjectForm::class)->name('projects.edit');
                 Route::get('/messages', Messages::class)->name('messages');
                 Route::post('/logout', function () {
+                    $locale = app()->getLocale();
                     auth()->logout();
                     request()->session()->invalidate();
                     request()->session()->regenerateToken();
+                    session()->flash('toast', ['message' => __('site.toast.logout'), 'type' => 'info']);
 
-                    return redirect()->route('admin.login', ['locale' => app()->getLocale()]);
+                    return redirect()->route('admin.login', ['locale' => $locale]);
                 })->name('logout');
             });
         });

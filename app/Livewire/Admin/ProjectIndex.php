@@ -10,6 +10,7 @@ class ProjectIndex extends Page
     public function delete(int $id): void
     {
         Project::query()->whereKey($id)->delete();
+        $this->toast(__('site.toast.deleted'));
     }
 
     protected function viewName(): string

@@ -3,10 +3,10 @@
         <h1 class="text-3xl font-extrabold">{{ __('site.admin.nav.skills') }}</h1>
         <div class="mt-4 grid gap-2">
             @foreach ($items as $item)
-                <button type="button" class="surface px-4 py-3 text-left" wire:click="edit({{ $item->id }})">
+                <x-action-button class="surface w-full justify-start px-4 py-3 text-left" wire:click="edit({{ $item->id }})" target="edit">
                     <span class="block font-bold">{{ $item->name }}</span>
                     <span class="text-sm text-muted">{{ $item->text('group_label') }}</span>
-                </button>
+                </x-action-button>
             @endforeach
         </div>
     </div>
@@ -15,10 +15,10 @@
         <label class="grid gap-2 text-sm font-semibold">Sort<input class="field" type="number" wire:model="sort"></label>
         <x-admin.locales label="Group" model="group_label" />
         <div class="flex gap-3">
-            <button type="submit" class="btn btn-primary">{{ __('site.admin.save') }}</button>
-            <button type="button" class="btn btn-ghost" wire:click="createNew">New</button>
+            <x-action-button type="submit" class="btn-primary" target="save">{{ __('site.admin.save') }}</x-action-button>
+            <x-action-button class="btn-ghost" wire:click="createNew" target="createNew">New</x-action-button>
             @if ($editing)
-                <button type="button" class="btn btn-ghost text-red-500" wire:click="delete({{ $editing }})">Delete</button>
+                <x-action-button class="btn-ghost text-red-500" wire:click="delete({{ $editing }})" target="delete">Delete</x-action-button>
             @endif
         </div>
     </form>

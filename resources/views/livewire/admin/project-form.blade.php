@@ -22,6 +22,6 @@
         <x-admin.locales label="Summary" model="summary" :area="true" />
         <x-admin.locales label="Body" model="body" :area="true" />
         @error('slug') <span class="text-sm text-red-500">{{ $message }}</span> @enderror
-        <button type="submit" class="btn btn-primary w-fit">{{ __('site.admin.save') }}</button>
+        <x-action-button type="submit" class="btn-primary w-fit" target="save">{{ __('site.admin.save') }}</x-action-button>
     </form>
 </div>

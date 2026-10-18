@@ -44,13 +44,13 @@
         <section class="surface grid gap-4 p-5">
             <div class="flex items-center justify-between">
                 <h2 class="font-extrabold">{{ __('site.cv.languages') }}</h2>
-                <button type="button" class="btn btn-ghost" wire:click="addLanguage">+</button>
+                <x-action-button class="btn-ghost" wire:click="addLanguage" target="addLanguage">+</x-action-button>
             </div>
             @foreach ($spoken_languages as $index => $language)
                 <div class="grid gap-3 rounded-2xl border border-line p-4">
                     <x-admin.locales label="Name" model="spoken_languages.{{ $index }}.name" />
                     <x-admin.locales label="Level" model="spoken_languages.{{ $index }}.level" />
-                    <button type="button" class="text-sm font-semibold text-red-500" wire:click="removeLanguage({{ $index }})">Remove</button>
+                    <x-action-button class="border-0 bg-transparent p-0 text-sm text-red-500" wire:click="removeLanguage({{ $index }})" target="removeLanguage">Remove</x-action-button>
                 </div>
             @endforeach
         </section>
@@ -58,14 +58,14 @@
         <section class="surface grid gap-4 p-5">
             <div class="flex items-center justify-between">
                 <h2 class="font-extrabold">Highlights</h2>
-                <button type="button" class="btn btn-ghost" wire:click="addHighlight">+</button>
+                <x-action-button class="btn-ghost" wire:click="addHighlight" target="addHighlight">+</x-action-button>
             </div>
             @foreach ($highlights as $index => $item)
                 <div class="grid gap-3 rounded-2xl border border-line p-4">
                     <label class="grid gap-2 text-sm font-semibold">Icon<input class="field" wire:model="highlights.{{ $index }}.icon"></label>
                     <x-admin.locales label="Title" model="highlights.{{ $index }}.title" />
                     <x-admin.locales label="Body" model="highlights.{{ $index }}.body" :area="true" />
-                    <button type="button" class="text-sm font-semibold text-red-500" wire:click="removeHighlight({{ $index }})">Remove</button>
+                    <x-action-button class="border-0 bg-transparent p-0 text-sm text-red-500" wire:click="removeHighlight({{ $index }})" target="removeHighlight">Remove</x-action-button>
                 </div>
             @endforeach
         </section>
@@ -84,6 +84,6 @@
             @endforeach
         </section>
 
-        <button type="submit" class="btn btn-primary w-fit">{{ __('site.admin.save') }}</button>
+        <x-action-button type="submit" class="btn-primary w-fit" target="save">{{ __('site.admin.save') }}</x-action-button>
     </form>
 </div>

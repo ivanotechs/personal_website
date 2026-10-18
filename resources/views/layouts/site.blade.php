@@ -16,6 +16,7 @@
             {{ $slot }}
         </main>
         <x-site.footer />
+        <x-toaster />
         @include('partials.theme-scripts')
     </body>
 </html>

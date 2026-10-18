@@ -98,12 +98,14 @@ class Profile extends Page
             'title' => ['en' => '', 'de' => '', 'fr' => ''],
             'body' => ['en' => '', 'de' => '', 'fr' => ''],
         ];
+        $this->toast(__('site.toast.added'), 'info');
     }
 
     public function removeHighlight(int $index): void
     {
         unset($this->highlights[$index]);
         $this->highlights = array_values($this->highlights);
+        $this->toast(__('site.toast.removed'), 'info');
     }
 
     public function addLanguage(): void
@@ -112,12 +114,14 @@ class Profile extends Page
             'name' => ['en' => '', 'de' => '', 'fr' => ''],
             'level' => ['en' => '', 'de' => '', 'fr' => ''],
         ];
+        $this->toast(__('site.toast.added'), 'info');
     }
 
     public function removeLanguage(int $index): void
     {
         unset($this->spoken_languages[$index]);
         $this->spoken_languages = array_values($this->spoken_languages);
+        $this->toast(__('site.toast.removed'), 'info');
     }
 
     public function save(): void
@@ -169,6 +173,7 @@ class Profile extends Page
 
         $this->saved = true;
         $this->portrait = null;
+        $this->toast(__('site.toast.saved'));
     }
 
     protected function viewName(): string

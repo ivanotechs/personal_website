@@ -34,6 +34,7 @@
                     <a
                         href="{{ route(request()->route()->getName(), array_merge(request()->route()->parameters(), ['locale' => $code])) }}"
                         wire:navigate
+                        @click="$store.toast.hold(@js(__('site.toast.locale', ['language' => __('site.locales.'.$code)])))"
                         @class([
                             'rounded-lg px-2.5 py-1 text-xs font-bold uppercase',
                             'bg-accent text-white' => app()->getLocale() === $code,
@@ -52,7 +53,7 @@
             <button
                 type="button"
                 class="grid size-10 place-items-center rounded-xl border border-line bg-elevated/80 lg:hidden"
-                @click="$store.ui.menu = ! $store.ui.menu"
+                @click="$store.ui.menu = ! $store.ui.menu; $store.toast.push($store.ui.menu ? @js(__('site.toast.menu_open')) : @js(__('site.toast.menu_close')), 'info')"
                 :aria-label="$store.ui.menu ? '{{ __('site.nav.close') }}' : '{{ __('site.nav.menu') }}'"
             >
                 <span x-show="! $store.ui.menu"><x-icon name="menu" class="size-5" /></span>
@@ -78,6 +79,7 @@
                     <a
                         href="{{ route(request()->route()->getName(), array_merge(request()->route()->parameters(), ['locale' => $code])) }}"
                         wire:navigate
+                        @click="$store.toast.hold(@js(__('site.toast.locale', ['language' => __('site.locales.'.$code)])))"
                         class="rounded-xl border border-line px-3 py-2 text-xs font-bold uppercase {{ app()->getLocale() === $code ? 'bg-accent text-white' : '' }}"
                     >
                         {{ __('site.locales.'.$code) }}

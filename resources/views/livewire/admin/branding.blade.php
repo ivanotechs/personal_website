@@ -11,6 +11,6 @@
         <label class="grid gap-2 text-sm font-semibold">Accent<input class="field h-12" type="color" wire:model="accent"></label>
         <label class="grid gap-2 text-sm font-semibold">Logo<input class="field" type="file" wire:model="logo" accept="image/*"></label>
         @error('logo') <span class="text-sm text-red-500">{{ $message }}</span> @enderror
-        <button type="submit" class="btn btn-primary w-fit">{{ __('site.admin.save') }}</button>
+        <x-action-button type="submit" class="btn-primary w-fit" target="save">{{ __('site.admin.save') }}</x-action-button>
     </form>
 </div>

@@ -61,6 +61,7 @@ class Account extends Page
         $user->save();
         $this->reset('password', 'password_confirmation');
         $this->saved = true;
+        $this->toast(__('site.toast.saved'));
     }
 
     protected function viewName(): string

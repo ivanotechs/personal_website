@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Livewire\Site\Contact;
+use App\Mail\ContactMessageMail;
 use App\Models\ContactMessage;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -49,9 +50,10 @@ class ExampleTest extends TestCase
             ->set('message', 'Hello from the form')
             ->call('submit')
             ->assertHasNoErrors()
-            ->assertSet('sent', true);
+            ->assertSet('sent', true)
+            ->assertDispatched('toast');
 
-        Mail::assertSent(\App\Mail\ContactMessageMail::class, function ($mail) {
+        Mail::assertSent(ContactMessageMail::class, function ($mail) {
             return $mail->hasTo('djforbian@gmail.com');
         });
     }

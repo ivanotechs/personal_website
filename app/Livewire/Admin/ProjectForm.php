@@ -102,6 +102,7 @@ class ProjectForm extends Page
             report($exception);
         }
 
+        $this->toastAfterRedirect(__('site.toast.saved'));
         $this->redirectRoute('admin.projects.index', ['locale' => app()->getLocale()], navigate: true);
     }
 

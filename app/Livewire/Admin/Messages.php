@@ -14,6 +14,7 @@ class Messages extends Page
         $message = ContactMessage::query()->findOrFail($id);
         $message->forceFill(['read_at' => $message->read_at ?? now()])->save();
         $this->open = $message->id;
+        $this->toast(__('site.toast.opened', ['name' => $message->name]), 'info');
     }
 
     public function remove(int $id): void
@@ -23,6 +24,8 @@ class Messages extends Page
         if ($this->open === $id) {
             $this->open = null;
         }
+
+        $this->toast(__('site.toast.deleted'));
     }
 
     protected function viewName(): string

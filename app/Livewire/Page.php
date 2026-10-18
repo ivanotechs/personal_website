@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\PageSeo;
 use App\Models\Setting;
+use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
 abstract class Page extends Component
@@ -55,5 +56,22 @@ abstract class Page extends Component
     protected function viewData(): array
     {
         return [];
+    }
+
+    protected function toast(string $message, string $type = 'success'): void
+    {
+        $this->dispatch('toast', message: $message, type: $type);
+    }
+
+    protected function toastAfterRedirect(string $message, string $type = 'success'): void
+    {
+        session()->flash('toast', ['message' => $message, 'type' => $type]);
+    }
+
+    public function exception($e, $stopPropagation): void
+    {
+        if ($e instanceof ValidationException) {
+            $this->toast(__('site.toast.invalid'), 'error');
+        }
     }
 }

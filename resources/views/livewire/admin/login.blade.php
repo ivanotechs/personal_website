@@ -14,6 +14,6 @@
             <input type="checkbox" wire:model="remember" class="size-4 accent-[var(--accent)]">
             {{ __('site.admin.login.remember') }}
         </label>
-        <button type="submit" class="btn btn-primary">{{ __('site.admin.login.submit') }}</button>
+        <x-action-button type="submit" class="btn-primary" target="submit">{{ __('site.admin.login.submit') }}</x-action-button>
     </form>
 </div>

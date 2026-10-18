@@ -43,9 +43,10 @@
                             </a>
                         @endforeach
                     </nav>
-                    <form method="POST" action="{{ route('admin.logout', ['locale' => app()->getLocale()]) }}" class="px-4 pb-5">
+                    <form method="POST" action="{{ route('admin.logout', ['locale' => app()->getLocale()]) }}" class="px-4 pb-5" x-data="{ busy: false }" @submit="busy = true">
                         @csrf
-                        <button type="submit" class="w-full rounded-xl px-3 py-2.5 text-left text-sm font-semibold text-muted hover:bg-canvas hover:text-ink">
+                        <button type="submit" class="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left text-sm font-semibold text-muted hover:bg-canvas hover:text-ink" :disabled="busy">
+                            <span x-cloak x-show="busy" class="size-4 animate-spin rounded-full border-2 border-current border-r-transparent"></span>
                             {{ __('site.admin.nav.logout') }}
                         </button>
                     </form>
@@ -60,6 +61,7 @@
                                     <a
                                         href="{{ route(request()->route()->getName(), array_merge(request()->route()->parameters(), ['locale' => $code])) }}"
                                         wire:navigate
+                                        @click="$store.toast.hold(@js(__('site.toast.locale', ['language' => __('site.locales.'.$code)])))"
                                         @class([
                                             'rounded-lg px-2 py-1 text-xs font-bold uppercase',
                                             'bg-accent text-white' => app()->getLocale() === $code,
@@ -83,6 +85,7 @@
                 {{ $slot }}
             </main>
         @endauth
+        <x-toaster />
         @include('partials.theme-scripts')
     </body>
 </html>

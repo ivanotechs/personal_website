@@ -37,14 +37,19 @@ class Experiences extends Page
         $this->sort = (int) $item->sort;
         $this->role = array_merge(['en' => '', 'de' => '', 'fr' => ''], $item->role ?? []);
         $this->summary = array_merge(['en' => '', 'de' => '', 'fr' => ''], $item->summary ?? []);
+        $this->toast(__('site.toast.opened', ['name' => $item->company]), 'info');
     }
 
-    public function createNew(): void
+    public function createNew(bool $silent = false): void
     {
         $this->reset(['editing', 'company', 'location', 'start_date', 'end_date', 'is_current']);
         $this->sort = (int) Experience::query()->max('sort') + 1;
         $this->role = ['en' => '', 'de' => '', 'fr' => ''];
         $this->summary = ['en' => '', 'de' => '', 'fr' => ''];
+
+        if (! $silent) {
+            $this->toast(__('site.toast.created'), 'info');
+        }
     }
 
     public function save(): void
@@ -72,7 +77,8 @@ class Experiences extends Page
             Experience::query()->create($data);
         }
 
-        $this->createNew();
+        $this->createNew(true);
+        $this->toast(__('site.toast.saved'));
     }
 
     public function delete(int $id): void
@@ -80,8 +86,10 @@ class Experiences extends Page
         Experience::query()->whereKey($id)->delete();
 
         if ($this->editing === $id) {
-            $this->createNew();
+            $this->createNew(true);
         }
+
+        $this->toast(__('site.toast.deleted'));
     }
 
     protected function viewName(): string

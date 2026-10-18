@@ -22,11 +22,13 @@ class Login extends Page
 
         if (! Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
             $this->addError('email', __('site.admin.login.failed'));
+            $this->toast(__('site.admin.login.failed'), 'error');
 
             return;
         }
 
         session()->regenerate();
+        $this->toastAfterRedirect(__('site.toast.login'));
         $this->redirectRoute('admin.dashboard', ['locale' => app()->getLocale()], navigate: true);
     }
 

@@ -25,7 +25,7 @@
                 <div class="rounded-2xl bg-accent/10 p-6">
                     <h2 class="text-2xl font-extrabold">{{ __('site.contact.sent_title') }}</h2>
                     <p class="mt-2 text-muted">{{ __('site.contact.sent_body') }}</p>
-                    <button type="button" class="btn btn-primary mt-6" wire:click="another">{{ __('site.contact.another') }}</button>
+                    <x-action-button class="btn-primary mt-6" wire:click="another" target="another">{{ __('site.contact.another') }}</x-action-button>
                 </div>
             @else
                 <form wire:submit="submit" class="grid gap-4">
@@ -49,7 +49,7 @@
                         <textarea class="field min-h-36" wire:model="message"></textarea>
                         @error('message') <span class="text-sm font-medium text-red-500">{{ $message }}</span> @enderror
                     </label>
-                    <button type="submit" class="btn btn-primary" wire:loading.attr="disabled">{{ __('site.contact.send') }}</button>
+                    <x-action-button type="submit" class="btn-primary" target="submit">{{ __('site.contact.send') }}</x-action-button>
                 </form>
             @endif
         </div>

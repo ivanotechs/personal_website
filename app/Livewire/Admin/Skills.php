@@ -22,13 +22,18 @@ class Skills extends Page
         $this->name = $item->name;
         $this->sort = (int) $item->sort;
         $this->group_label = array_merge(['en' => '', 'de' => '', 'fr' => ''], $item->group_label ?? []);
+        $this->toast(__('site.toast.opened', ['name' => $item->name]), 'info');
     }
 
-    public function createNew(): void
+    public function createNew(bool $silent = false): void
     {
         $this->reset(['editing', 'name']);
         $this->sort = (int) Skill::query()->max('sort') + 1;
         $this->group_label = ['en' => '', 'de' => '', 'fr' => ''];
+
+        if (! $silent) {
+            $this->toast(__('site.toast.created'), 'info');
+        }
     }
 
     public function save(): void
@@ -50,7 +55,8 @@ class Skills extends Page
             Skill::query()->create($data);
         }
 
-        $this->createNew();
+        $this->createNew(true);
+        $this->toast(__('site.toast.saved'));
     }
 
     public function delete(int $id): void
@@ -58,8 +64,10 @@ class Skills extends Page
         Skill::query()->whereKey($id)->delete();
 
         if ($this->editing === $id) {
-            $this->createNew();
+            $this->createNew(true);
         }
+
+        $this->toast(__('site.toast.deleted'));
     }
 
     protected function viewName(): string

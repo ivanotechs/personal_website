@@ -5,7 +5,7 @@
             <h1 class="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">{{ $settings?->full_name }}</h1>
             <p class="mt-4 text-lg leading-8 text-muted">{{ $settings?->text('role_label') }}</p>
         </div>
-        <button type="button" class="btn btn-primary no-print" onclick="window.print()">{{ __('site.cv.print') }}</button>
+        <x-action-button class="btn-primary no-print" :notice="__('site.toast.print')" onclick="window.print()">{{ __('site.cv.print') }}</x-action-button>
     </section>
 
     <section class="mx-auto grid max-w-6xl gap-4 px-5 pb-12 lg:grid-cols-[0.85fr_1.15fr]">
