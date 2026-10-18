@@ -5,9 +5,11 @@ namespace Tests\Feature;
 use App\Livewire\Site\Contact;
 use App\Mail\ContactMessageMail;
 use App\Models\ContactMessage;
+use App\Models\Project;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -24,6 +26,10 @@ class ExampleTest extends TestCase
         $this->get('/de/cv')->assertOk()->assertSee('Afrovision');
         $this->get('/fr/projects')->assertOk();
         $this->get('/en/projects/market-pilot')->assertOk()->assertSee('mk.funvas.com');
+        $this->assertSame('projects/market-pilot.png', Project::query()->where('slug', 'market-pilot')->value('icon_path'));
+        $this->assertTrue(Storage::disk('public')->exists('brand/logo.jpg'));
+        $this->assertTrue(Storage::disk('public')->exists('projects/market-pilot.png'));
+        $this->assertTrue(Storage::disk('public')->exists('projects/pro4home.svg'));
         $this->get('/sitemap.xml')->assertOk();
         $this->get('/robots.txt')->assertOk()->assertSee('Sitemap:');
         $this->get('/en/admin')->assertRedirect('/en/admin/login');

@@ -10,6 +10,7 @@ use App\Models\Project;
 use App\Models\Setting;
 use App\Models\Skill;
 use App\Models\User;
+use App\Support\SiteIcon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
 
@@ -25,6 +26,7 @@ class PortfolioSeeder extends Seeder
         $this->skills();
         $this->projects();
         $this->pages();
+        $this->refreshIcons();
         Setting::forgetCache();
     }
 
@@ -38,10 +40,10 @@ class PortfolioSeeder extends Seeder
         $email = 'djforbian@gmail.com';
         $user = User::query()->firstOrNew(['email' => $email]);
         $user->name = 'Yannick Ivan Djoukeng Nougning';
-        $user->phone = '+237 670011942';
-        $user->address = 'Caprice';
-        $user->city = 'Accra';
-        $user->country = 'Ghana';
+        $user->phone = '+49 179 70 44 825';
+        $user->address = 'Zwickau';
+        $user->city = 'Zwickau';
+        $user->country = 'Deutschland';
         $user->email_verified_at = $user->email_verified_at ?? now();
 
         if (! $user->exists) {
@@ -53,10 +55,31 @@ class PortfolioSeeder extends Seeder
 
     private function media(): void
     {
+        $disk = Storage::disk('public');
+
         foreach (['logo.jpg', 'portrait.jpg'] as $file) {
             $source = database_path('seeders/assets/'.$file);
+
             if (is_file($source)) {
-                Storage::disk('public')->put('brand/'.$file, file_get_contents($source));
+                $disk->put('brand/'.$file, file_get_contents($source));
+            }
+        }
+
+        $icons = database_path('seeders/assets/projects');
+
+        if (! is_dir($icons)) {
+            return;
+        }
+
+        foreach (scandir($icons) ?: [] as $file) {
+            if ($file === '.' || $file === '..') {
+                continue;
+            }
+
+            $source = $icons.DIRECTORY_SEPARATOR.$file;
+
+            if (is_file($source)) {
+                $disk->put('projects/'.$file, file_get_contents($source));
             }
         }
     }
@@ -71,14 +94,14 @@ class PortfolioSeeder extends Seeder
             'portrait_path' => 'brand/portrait.jpg',
             'public_email' => 'djforbian@gmail.com',
             'phone' => '+237 670011942',
-            'address' => 'Caprice',
-            'city' => 'Accra',
-            'country' => 'Ghana',
+            'address' => 'Zwickau',
+            'city' => 'Zwickau',
+            'country' => 'Deutschland',
             'birth_date' => '2003-01-15',
             'github_url' => 'https://github.com/ivanotechs',
             'linkedin_url' => 'https://www.linkedin.com/in/djoukeng-nougning-yannick-ivan-2ab40719a/',
             'xing_url' => 'https://www.xing.com/profile/YANNICKIVAN_DJOUKENGNOUGNING/web_profiles',
-            'website_url' => 'https://mk.funvas.com',
+            'website_url' => 'https://ivanotechs.site',
             'x_url' => 'https://x.com/ivanotechs',
             'accent' => '#2f7cff',
             'nationality' => $this->t('Cameroonian', 'Kamerunisch', 'Camerounaise'),
@@ -89,13 +112,13 @@ class PortfolioSeeder extends Seeder
                 'Je construis des logiciels pour des produits qui bougent.',
             ),
             'about_short' => $this->t(
-                'Software engineer and freelance developer. I trained as a computer engineer at the University of Buea and I am starting a master’s in automotive software engineering this semester.',
-                'Softwareentwickler und Freiberufler. Ich habe Computer Engineering an der Universität Buea studiert und beginne in diesem Semester den Master in Automotive Software Engineering.',
+                'Software engineer and freelance developer. I trained as a computer engineer at the University of Buea and I am doing a master’s in automotive software engineering at TU Chemnitz.',
+                'Softwareentwickler und Freiberufler. Ich habe Computer Engineering an der Universität Buea studiert und absolviere einen Master in Automotive Software Engineering an der TU Chemnitz .',
                 'Ingénieur logiciel et développeur indépendant. J’ai étudié l’ingénierie informatique à l’université de Buea et je commence ce semestre un master en ingénierie logicielle automobile.',
             ),
             'about_long' => $this->t(
-                'I am a passionate software developer and I learn quickly. I adapt to the situation in front of me so I can do my best work, and I want to build useful solutions for everyday problems with strong teams. I studied computer engineering at the University of Buea from 2020 to 2024: PHP, C/C++, the web, Java, Python, Matlab, software architecture, data and artificial intelligence, networks, electronics, and microcontrollers. From 2023 to 2025 I developed and tested software at Afrovision Group, including Laravel applications, Livewire and Alpine.js interfaces, Flutter apps, and Docker deployments. Since October 2025 I have been freelancing under Ivanotechs and building Market Pilot at mk.funvas.com. This semester I am starting a master’s in automotive software engineering. I am looking for partial work in web development or software development, 30 hours a week or more, from home or hybrid.',
-                'Ich bin ein leidenschaftlicher Softwareentwickler und lerne schnell. Ich passe mich an die Situation an, um mein Bestes zu geben, und ich möchte mit starken Teams Lösungen für Probleme des Alltags bauen. Von 2020 bis 2024 habe ich Computer Engineering an der Universität Buea studiert: PHP, C/C++, Web, Java, Python, Matlab, Softwarearchitektur, Daten und künstliche Intelligenz, Netzwerke, Elektronik und Mikrocontroller. Von 2023 bis 2025 habe ich bei der Afrovision Group Software entwickelt und getestet, darunter Laravel-Anwendungen, Oberflächen mit Livewire und Alpine.js, Flutter-Apps und Deployments mit Docker. Seit Oktober 2025 arbeite ich freiberuflich als Ivanotechs und baue Market Pilot auf mk.funvas.com. In diesem Semester beginne ich den Master in Automotive Software Engineering. Ich suche eine Teilzeitstelle in der Web- oder Softwareentwicklung, 30 Stunden pro Woche oder mehr, im Homeoffice oder hybrid.',
+                'I am a passionate software developer and I learn quickly. I adapt to the situation in front of me so I can do my best work, and I want to build useful solutions for everyday problems with strong teams. I studied computer engineering at the University of Buea from 2020 to 2024: PHP, C/C++, the web, Java, Python, Matlab, software architecture, data and artificial intelligence, networks, electronics, and microcontrollers. From 2023 to 2025 I developed and tested software at Afrovision Group, including Laravel applications, Livewire and Alpine.js interfaces, Flutter apps, and Docker deployments. Since October 2025 I have been freelancing under Ivanotechs and building Market Pilot at mk.funvas.com. I am currently doing a master’s in automotive software engineering at the Technical University of Chemnitz. I am looking for part time work in web development or software development, 30 hours a week or more, from home or hybrid.',
+                'Ich bin ein leidenschaftlicher Softwareentwickler und lerne schnell. Ich passe mich an die Situation an, um mein Bestes zu geben, und ich möchte mit starken Teams Lösungen für Probleme des Alltags bauen. Von 2020 bis 2024 habe ich Computer Engineering an der Universität Buea studiert: PHP, C/C++, Web, Java, Python, Matlab, Softwarearchitektur, Daten und künstliche Intelligenz, Netzwerke, Elektronik und Mikrocontroller. Von 2023 bis 2025 habe ich bei der Afrovision Group Software entwickelt und getestet, darunter Laravel-Anwendungen, Oberflächen mit Livewire und Alpine.js, Flutter-Apps und Deployments mit Docker. Seit Oktober 2025 arbeite ich freiberuflich als Ivanotechs und baue Market Pilot auf mk.funvas.com. Momentan absolviere ich den Master in Automotive Software Engineering an der TU Chemnitz. Ich suche eine Teilzeitstelle in der Web- oder Softwareentwicklung, 30 Stunden pro Woche oder mehr, im Homeoffice oder hybrid.',
                 'Je suis un développeur passionné et j’apprends vite. Je m’adapte à la situation pour donner le meilleur de moi-même, et je veux construire des solutions utiles aux problèmes du quotidien avec de bonnes équipes. De 2020 à 2024, j’ai étudié l’ingénierie informatique à l’université de Buea : PHP, C/C++, web, Java, Python, Matlab, architecture logicielle, données et intelligence artificielle, réseaux, électronique et microcontrôleurs. De 2023 à 2025, j’ai développé et testé des logiciels chez Afrovision Group, dont des applications Laravel, des interfaces Livewire et Alpine.js, des applications Flutter et des déploiements Docker. Depuis octobre 2025, je suis indépendant sous le nom Ivanotechs et je construis Market Pilot sur mk.funvas.com. Ce semestre, je commence un master en ingénierie logicielle automobile. Je cherche un temps partiel en développement web ou logiciel, 30 heures par semaine ou plus, en télétravail ou en hybride.',
             ),
             'availability' => $this->t(
@@ -109,20 +132,20 @@ class PortfolioSeeder extends Seeder
                 'Ivanotechs — Yannick Ivan Djoukeng Nougning, ingénieur logiciel',
             ),
             'seo_description' => $this->t(
-                'Portfolio of Yannick Ivan Djoukeng Nougning, ivanotechs. Freelance software engineer, Laravel and web developer, starting a master’s in automotive software engineering. Open to partial remote or hybrid work.',
-                'Portfolio von Yannick Ivan Djoukeng Nougning, ivanotechs. Freiberuflicher Softwareentwickler, Laravel und Web, Beginn des Masters in Automotive Software Engineering. Offen für Teilzeit remote oder hybrid.',
-                'Portfolio de Yannick Ivan Djoukeng Nougning, ivanotechs. Ingénieur logiciel indépendant, Laravel et web, début d’un master en ingénierie logicielle automobile. Ouvert à un temps partiel à distance ou hybride.',
+                'Portfolio of Yannick Ivan Djoukeng Nougning, ivanotechs. Freelance software engineer, Laravel and web developer, master’s in automotive software engineering, TU Chemitz. Open to partial remote or hybrid work.',
+                'Portfolio von Yannick Ivan Djoukeng Nougning, ivanotechs. Freiberuflicher Softwareentwickler, Laravel und Web,  Masters in Automotive Software Engineering, TU Chemnitz. Offen für Teilzeit remote oder hybrid.',
+                'Portfolio de Yannick Ivan Djoukeng Nougning, ivanotechs. Ingénieur logiciel indépendant, Laravel et web, début d’un master en ingénierie logicielle automobile, TU Chemnitz. Ouvert à un temps partiel à distance ou hybride.',
             ),
             'seo_keywords' => $this->t(
-                'Ivanotechs, ivanotechs, Yannick Ivan Djoukeng Nougning, Ivan Djoukeng, Laravel, Livewire, Alpine.js, web developer, automotive software, freelance',
-                'Ivanotechs, ivanotechs, Yannick Ivan Djoukeng Nougning, Softwareentwickler, Laravel, Livewire, Alpine.js, Webentwicklung, Automotive Software, Freiberufler',
-                'Ivanotechs, ivanotechs, Yannick Ivan Djoukeng Nougning, développeur web, Laravel, Livewire, Alpine.js, logiciel automobile, freelance',
+                'Ivanotechs, ivanotechs, Yannick Ivan Djoukeng Nougning, Ivan Djoukeng, Laravel, Livewire, Alpine.js, web developer, automotive software, freelance, TU Chemitz, Student, Zwickau, Sachsen',
+                'Ivanotechs, ivanotechs, Yannick Ivan Djoukeng Nougning, Softwareentwickler, Laravel, Livewire, Alpine.js, Webentwicklung, Automotive Software, Freiberufler, TU Chemitz, Student, Zwickau, Sachsen',
+                'Ivanotechs, ivanotechs, Yannick Ivan Djoukeng Nougning, développeur web, Laravel, Livewire, Alpine.js, logiciel automobile, freelance, TU Chemitz, Student, Zwickau, Sachsen',
             ),
             'highlights' => [
-                ['icon' => 'window', 'title' => $this->t('Web applications', 'Webanwendungen', 'Applications web'), 'body' => $this->t('Laravel, Livewire, Alpine.js, and Tailwind for product sites and admin tools.', 'Laravel, Livewire, Alpine.js und Tailwind für Produktseiten und Admin-Werkzeuge.', 'Laravel, Livewire, Alpine.js et Tailwind pour des sites produit et des outils d’admin.')],
+                ['icon' => 'window', 'title' => $this->t('Web applications', 'Webanwendungen', 'Applications web'), 'body' => $this->t('Laravel, Livewire, Alpine.js, and Tailwind, REST APIs for product sites and admin tools.', 'Laravel, Livewire, Alpine.js und Tailwind , REST API für Produktseiten und Admin-Werkzeuge.', 'Laravel, Livewire, Alpine.js et Tailwind, REST APIs pour des sites produit et des outils d’admin.')],
                 ['icon' => 'car', 'title' => $this->t('Automotive software', 'Automotive Software', 'Logiciel automobile'), 'body' => $this->t('A master’s starting this semester, next to software that already sits near vehicles and logistics.', 'Ein Master, der in diesem Semester beginnt, neben Software, die schon nah an Fahrzeugen und Logistik sitzt.', 'Un master qui commence ce semestre, à côté de logiciels déjà proches des véhicules et de la logistique.')],
                 ['icon' => 'chip', 'title' => $this->t('Systems', 'Systeme', 'Systèmes'), 'body' => $this->t('C and C++ for a shell, local chat, and stock tools, plus Docker for deployment.', 'C und C++ für eine Shell, lokalen Chat und Lagerwerkzeuge, plus Docker für das Deployment.', 'C et C++ pour un shell, un chat local et des outils de stock, plus Docker pour le déploiement.')],
-                ['icon' => 'spark', 'title' => $this->t('Freelance', 'Freiberuflich', 'Indépendant'), 'body' => $this->t('Available for 30 hours or more each week, at home or hybrid.', 'Verfügbar für 30 Stunden oder mehr pro Woche, zu Hause oder hybrid.', 'Disponible 30 heures ou plus par semaine, à la maison ou en hybride.')],
+                ['icon' => 'spark', 'title' => $this->t('Software Developer Job Search', 'Softwareentwickler Stelle', 'Developpeur Logiciel'), 'body' => $this->t('Available for 30 hours or more each week, at home or hybrid.', 'Verfügbar für 30 Stunden oder mehr pro Woche, zu Hause oder hybrid.', 'Disponible 30 heures ou plus par semaine, à la maison ou en hybride.')],
             ],
             'spoken_languages' => [
                 ['name' => $this->t('English', 'Englisch', 'Anglais'), 'level' => $this->t('Native', 'Muttersprache', 'Langue maternelle')],
@@ -137,18 +160,18 @@ class PortfolioSeeder extends Seeder
         Experience::query()->delete();
 
         $rows = [
-            ['Freelance', 'Remote', '2025-10-01', null, true, 1,
+            ['Freelance', 'Remote', '2026-01-05', null, true, 1,
                 $this->t('Software engineer', 'Softwareentwickler', 'Ingénieur logiciel'),
                 $this->t('Independent work as Ivanotechs. Current build: Market Pilot, the marketing platform at mk.funvas.com. Open to partial contracts of 30 hours or more, home office or hybrid.', 'Selbstständige Arbeit als Ivanotechs. Aktueller Bau: Market Pilot, die Marketingplattform auf mk.funvas.com. Offen für Teilzeitverträge ab 30 Stunden, Homeoffice oder hybrid.', 'Travail indépendant sous le nom Ivanotechs. Chantier en cours : Market Pilot, la plateforme marketing sur mk.funvas.com. Ouvert à des contrats partiels de 30 heures ou plus, télétravail ou hybride.')],
             ['Afrovision Group', 'Buea, Cameroon', '2024-01-09', '2025-11-21', false, 2,
                 $this->t('Software developer', 'Softwareentwickler', 'Développeur logiciel'),
                 $this->t('Fullstack websites and web applications with PHP, Laravel, HTML, CSS, Livewire, and Alpine.js, plus Flutter. Docker for deployment, Git and GitHub for the team.', 'Fullstack-Websites und Webanwendungen mit PHP, Laravel, HTML, CSS, Livewire und Alpine.js, dazu Flutter. Docker für das Deployment, Git und GitHub im Team.', 'Sites et applications web fullstack en PHP, Laravel, HTML, CSS, Livewire et Alpine.js, plus Flutter. Docker pour le déploiement, Git et GitHub en équipe.')],
-            ['Bruno Kaiser Gruppe GmbH', null, '2024-01-01', '2025-11-30', false, 3,
-                $this->t('Software developer', 'Softwareentwickler', 'Développeur logiciel'),
-                $this->t('Listed on the Xing profile as software developer for this period.', 'Im Xing-Profil als Softwareentwickler für diesen Zeitraum genannt.', 'Indiqué sur le profil Xing comme développeur logiciel pour cette période.')],
             ['Afrovision Group', 'Buea', '2023-08-08', '2024-01-08', false, 4,
                 $this->t('Software development internship', 'Praktikum Softwareentwicklung', 'Stage en développement logiciel'),
                 $this->t('Software development and testing.', 'Softwareentwicklung und Testing.', 'Développement logiciel et tests.')],
+            ['Proguide', 'Buea, Cameroon', '2023-09-18', '2026-01-26', false, 4,
+                $this->t('Backend Developer', 'Backendentwickler', 'Developpeur Backend'),
+                $this->t('Part-time Backend Developer with Laravel and emphasis on admin dashboard and REST APIs', 'Teilzeit Backendentwickler mit Laravel. Schwerpunkt in Admin Dashboard und REST API Architekturen', 'Developpeur Backend avec Laravel et spécialiste des dashbboard administrateur et architecte REST')],
         ];
 
         foreach ($rows as [$company, $location, $start, $end, $current, $sort, $role, $summary]) {
@@ -170,9 +193,9 @@ class PortfolioSeeder extends Seeder
         Education::query()->delete();
 
         $rows = [
-            ['', null, '2026-10-01', null, true, 1,
+            ['TU Chemnitz', 'Deutschland, Sachsen, Chemnitz', '2026-10-01', null, true, 1,
                 $this->t('M.Sc. Automotive Software Engineering', 'M.Sc. Automotive Software Engineering', 'Master en ingénierie logicielle automobile'),
-                $this->t('The programme starts this semester. The university name can be added here from the admin.', 'Das Studium beginnt in diesem Semester. Der Name der Hochschule kann hier im Admin ergänzt werden.', 'Le cursus commence ce semestre. Le nom de l’établissement peut être ajouté ici depuis l’admin.')],
+                $this->t('Learning how to build softwares for the automobile and aeronautic  industry.', 'Ich lerne, wie man Anwendungen für die Automobilindustrie entwickelt', 'Logiciels pour l’industrie automobile')],
             ['University of Buea', 'Buea, Cameroon', '2020-11-02', '2024-07-19', false, 2,
                 $this->t('Computer engineering', 'Computer Engineering', 'Ingénierie informatique'),
                 $this->t('EQF level 6. Software with PHP, C/C++, HTML, CSS, JavaScript, Matlab, Java, and Python. Architecture and algorithms, data and artificial intelligence, networks and service-oriented architecture, electronics and microcontrollers.', 'EQR-Niveau 6. Software mit PHP, C/C++, HTML, CSS, JavaScript, Matlab, Java und Python. Architektur und Algorithmen, Daten und künstliche Intelligenz, Netzwerke und serviceorientierte Architektur, Elektronik und Mikrocontroller.', 'Niveau CEC 6. Logiciel en PHP, C/C++, HTML, CSS, JavaScript, Matlab, Java et Python. Architecture et algorithmes, données et intelligence artificielle, réseaux et architecture orientée services, électronique et microcontrôleurs.')],
@@ -222,8 +245,44 @@ class PortfolioSeeder extends Seeder
         Project::query()->delete();
         $sort = 1;
         foreach ($this->projectRows() as $row) {
-            Project::query()->create($row + ['sort' => $sort, 'published' => true]);
+            Project::query()->create($row + ['sort' => $sort, 'published' => true] + $this->bundledIcon($row['slug']));
             $sort++;
+        }
+    }
+
+    /**
+     * @return array{icon_path: ?string, icon_light: bool}
+     */
+    private function bundledIcon(string $slug): array
+    {
+        foreach (['png', 'svg', 'jpg', 'jpeg', 'webp', 'gif', 'ico'] as $extension) {
+            $path = 'projects/'.$slug.'.'.$extension;
+
+            if (is_file(database_path('seeders/assets/'.$path))) {
+                return ['icon_path' => $path, 'icon_light' => false];
+            }
+        }
+
+        return ['icon_path' => null, 'icon_light' => false];
+    }
+
+    private function refreshIcons(): void
+    {
+        if (app()->runningUnitTests()) {
+            return;
+        }
+
+        $icons = app(SiteIcon::class);
+
+        foreach (Project::query()->orderBy('sort')->get() as $project) {
+            $source = $project->url ?: $project->github_url;
+
+            if (! is_string($source) || trim($source) === '') {
+                continue;
+            }
+
+            $saved = $icons->store($project);
+            $this->command?->line($saved ? $project->slug.' icon updated from the site' : $project->slug.' kept the bundled icon');
         }
     }
 
@@ -236,28 +295,28 @@ class PortfolioSeeder extends Seeder
         $platform = 'platform';
 
         return [
-            $this->project('market-pilot', $platform, '2026', 'https://mk.funvas.com', null, true, ['Laravel', 'SaaS', 'SMS'], 'Market Pilot',
+            $this->project('market-pilot', $platform, '2026', 'https://mk.funvas.com', null, true, ['Laravel', 'Vuejs', 'OpenAI integration SaaS', 'SMS'], 'Market Pilot',
                 $this->t('The product I am building now at mk.funvas.com.', 'Das Produkt, das ich gerade auf mk.funvas.com baue.', 'Le produit que je construis en ce moment sur mk.funvas.com.'),
                 $this->t('A multi-tenant marketing platform. The backend covers content plans, SMS campaigns, wallets, agents, and AI generation jobs.', 'Eine Multi-Tenant-Marketingplattform. Das Backend umfasst Content-Pläne, SMS-Kampagnen, Wallets, Agenten und KI-Generierung.', 'Une plateforme marketing multi-tenant. Le backend couvre les plans de contenu, les campagnes SMS, les portefeuilles, les agents et les tâches de génération IA.')),
-            $this->project('signbridge', $web, '2026', null, null, true, ['Laravel', 'Livewire', 'OTP'], 'SignBridge',
+            $this->project('signbridge', $web, '2026', 'https://sb.funvas.com', 'https://github.com/ivanotechs/signbridge_be', true, ['Laravel', 'Livewire', 'OTP', 'REST API', 'MySql', 'Docker', 'Nginx', 'Node', 'Git', 'Git actions'], 'SignBridge',
                 $this->t('A learning API and admin for lessons, practice, and passwordless sign-in.', 'Eine Lern-API und ein Admin für Lektionen, Übung und Anmeldung ohne Passwort.', 'Une API d’apprentissage et un admin pour les leçons, la pratique et la connexion sans mot de passe.'),
                 $this->t('Laravel 13 API and Livewire admin: email OTP, Google and Apple login, lessons, questions, and practice sessions.', 'Laravel-13-API und Livewire-Admin: E-Mail-OTP, Anmeldung mit Google und Apple, Lektionen, Fragen und Übungssitzungen.', 'API Laravel 13 et admin Livewire : OTP par e-mail, connexion Google et Apple, leçons, questions et sessions de pratique.')),
-            $this->project('swift-relocate', $web, '2025', null, null, true, ['Laravel', 'Quotes', 'Tracking'], 'Swift Relocate',
+            $this->project('swift-relocate', $web, '2025', 'https://swiftrelocate.com/', null, true, ['Laravel', 'Quotes', 'Tracking', 'Livewire', 'Tailwindcss', 'Apline JS'], 'Swift Relocate',
                 $this->t('A moving-company site with quotes, jobs, and shipment tracking.', 'Eine Umzugswebsite mit Angeboten, Aufträgen und Sendungsverfolgung.', 'Un site de déménagement avec devis, missions et suivi des envois.'),
                 $this->t('Public pages for services and locations, plus move jobs, vehicles, negotiations, and a tracking result.', 'Öffentliche Seiten für Leistungen und Orte, dazu Umzugsaufträge, Fahrzeuge, Verhandlungen und ein Tracking-Ergebnis.', 'Pages publiques pour les services et les lieux, plus les missions, les véhicules, les négociations et un résultat de suivi.')),
             $this->project('vamvam', $platform, '2026', null, null, true, ['Laravel', 'Education'], 'Vamvam',
                 $this->t('University software for classes, attendance, results, and staff pay.', 'Hochschulsoftware für Klassen, Anwesenheit, Ergebnisse und Gehälter.', 'Logiciel universitaire pour les classes, les présences, les résultats et les salaires.'),
                 $this->t('The university application models students, courses, attendance, results, and wages. A separate admin dashboard was designed in Figma and built as an interface.', 'Die Hochschulanwendung modelliert Studierende, Kurse, Anwesenheit, Ergebnisse und Löhne. Ein separates Admin-Dashboard wurde in Figma entworfen und als Oberfläche gebaut.', 'L’application universitaire modélise étudiants, cours, présences, résultats et salaires. Un tableau de bord admin séparé a été dessiné dans Figma puis construit.')),
-            $this->project('buyam', $platform, '2025', null, null, true, ['Laravel', 'Marketplace'], 'Buyam',
+            $this->project('buyam', $platform, '2025', 'https://buyam.co/', null, true, ['Laravel', 'Marketplace'], 'Buyam',
                 $this->t('A marketplace backend for vendors, products, and subscriptions.', 'Ein Marktplatz-Backend für Händler, Produkte und Abos.', 'Un backend de marketplace pour vendeurs, produits et abonnements.'),
                 $this->t('Vendors, wishlists, ratings, subscriptions, and a public site for selling, resellers, and customers. A global marketing site sits beside the backend.', 'Händler, Wunschlisten, Bewertungen, Abos und eine öffentliche Seite für Verkauf, Wiederverkäufer und Kunden. Eine globale Marketingseite steht neben dem Backend.', 'Vendeurs, listes d’envies, notes, abonnements et un site public pour la vente, les revendeurs et les clients. Un site marketing global accompagne le backend.')),
-            $this->project('flexy-pay', $platform, '2025', null, null, true, ['Laravel', 'Accounts', 'Loans'], 'Flexy Pay',
+            $this->project('flexy-pay', $platform, '2025', 'https://play.google.com/store/apps/details?id=com.flexypay.app&pcampaignid=web_share', null, true, ['Laravel', 'Accounts', 'Loans', 'E-Banking'], 'Flexy Pay',
                 $this->t('Banking software for accounts, savings, and loans.', 'Bankensoftware für Konten, Sparen und Kredite.', 'Logiciel bancaire pour comptes, épargne et prêts.'),
                 $this->t('The Flexy Pay codebase opens accounts, links them, and records loans, guarantors, charges, and transactions.', 'Der Flexy-Pay-Code eröffnet Konten, verknüpft sie und erfasst Kredite, Bürgen, Gebühren und Transaktionen.', 'Le code Flexy Pay ouvre des comptes, les relie et enregistre prêts, garants, frais et transactions.')),
             $this->project('manuba', $web, '2025', null, null, true, ['Laravel', 'Hospitality'], 'Manuba',
                 $this->t('A back office for dishes, drinks, rentals, stock, and pay.', 'Ein Backoffice für Gerichte, Getränke, Vermietung, Lager und Lohn.', 'Un back-office pour plats, boissons, locations, stock et paie.'),
                 $this->t('Menus, gallery, products, purchases, rentals, defects, teams, and salary scales, with a sync path for pending changes.', 'Speisen, Galerie, Produkte, Einkäufe, Vermietungen, Mängel, Teams und Gehaltsstufen, mit einem Sync für offene Änderungen.', 'Menus, galerie, produits, achats, locations, défauts, équipes et grilles de salaire, avec une synchro des changements en attente.')),
-            $this->project('pro4home', $mobile, '2025', null, null, false, ['Laravel', 'Flutter'], 'Pro4Home',
+            $this->project('pro4home', $mobile, '2025', 'https://pro4h.com/', null, true, ['Laravel', 'Flutter', 'Livewire', 'Tailwind'], 'Pro4Home',
                 $this->t('Home services: a Laravel API and a Flutter app.', 'Dienstleistungen fürs Zuhause: eine Laravel-API und eine Flutter-App.', 'Services à domicile : une API Laravel et une application Flutter.'),
                 $this->t('Companies, skills, requests, portfolios, and blog content on the backend, with a Flutter client in the same Afrovision work.', 'Firmen, Fähigkeiten, Anfragen, Portfolios und Blog im Backend, mit einem Flutter-Client in derselben Afrovision-Arbeit.', 'Entreprises, compétences, demandes, portfolios et blog côté backend, avec un client Flutter dans le même travail Afrovision.')),
             $this->project('true-life', $web, '2025', null, null, false, ['Laravel', 'Invoices'], 'True Life',
@@ -361,10 +420,10 @@ class PortfolioSeeder extends Seeder
             'contact' => $this->t('Contact Ivanotechs — djforbian@gmail.com', 'Kontakt Ivanotechs — djforbian@gmail.com', 'Contact Ivanotechs — djforbian@gmail.com'),
         ];
         $descriptions = [
-            'home' => $this->t('Ivanotechs, the site of Yannick Ivan Djoukeng Nougning. Software, projects, and a master’s in automotive software.', 'Ivanotechs, die Seite von Yannick Ivan Djoukeng Nougning. Software, Projekte und ein Master in Automotive Software.', 'Ivanotechs, le site de Yannick Ivan Djoukeng Nougning. Logiciel, projets et un master en logiciel automobile.'),
-            'about' => $this->t('Who Ivan Djoukeng is: computer engineering, Afrovision, freelance work, and automotive software.', 'Wer Ivan Djoukeng ist: Computer Engineering, Afrovision, Freiberuflichkeit und Automotive Software.', 'Qui est Ivan Djoukeng : ingénierie informatique, Afrovision, indépendant et logiciel automobile.'),
-            'cv' => $this->t('CV of Yannick Ivan Djoukeng Nougning: education, Afrovision Group, Bruno Kaiser, and freelance work.', 'Lebenslauf von Yannick Ivan Djoukeng Nougning: Ausbildung, Afrovision Group, Bruno Kaiser und Freiberuflichkeit.', 'CV de Yannick Ivan Djoukeng Nougning : études, Afrovision Group, Bruno Kaiser et travail indépendant.'),
-            'projects' => $this->t('Projects by ivanotechs: Laravel, Flutter, C, and the marketing platform mk.funvas.com.', 'Projekte von ivanotechs: Laravel, Flutter, C und die Marketingplattform mk.funvas.com.', 'Projets d’ivanotechs : Laravel, Flutter, C et la plateforme marketing mk.funvas.com.'),
+            'home' => $this->t('Ivanotechs, the personal website of Yannick Ivan Djoukeng Nougning. Software, projects, and a master’s in automotive software in Chemnitz.', 'Ivanotechs, die persönliche  Webseite von Yannick Ivan Djoukeng Nougning. Software, Projekte und ein Master in Automotive Software in Chemnitz.', 'Ivanotechs, le site de Yannick Ivan Djoukeng Nougning. Logiciel, projets et un master en logiciel automobile.'),
+            'about' => $this->t('Who Ivan Djoukeng is: computer engineering, Afrovision, freelance work, and automotive software, Funvas.', 'Wer Ivan Djoukeng ist: Computer Engineering, Afrovision, Freiberuflichkeit und Automotive Software, Funvas.', 'Qui est Ivan Djoukeng : ingénierie informatique, Afrovision, indépendant et logiciel automobile, Funvas.'),
+            'cv' => $this->t('CV of Yannick Ivan Djoukeng Nougning: education, Afrovision Group, Proguide, Buyam, Funvas, and freelance work.', 'Lebenslauf von Yannick Ivan Djoukeng Nougning: Ausbildung, Afrovision Group, Proguide, Buyam, Funvas, B und Freiberuflichkeit.', 'CV de Yannick Ivan Djoukeng Nougning : études, Afrovision Group,  Proguide, Buyam, Funvas, et travail indépendant.'),
+            'projects' => $this->t('Projects by ivanotechs: Laravel, Flutter, C, Python.', 'Projekte von ivanotechs: Laravel, Flutter, C, Python usw', 'Projets d’ivanotechs : Laravel, Flutter, C, Python etc.'),
             'contact' => $this->t('Contact Ivanotechs. Messages are sent to djforbian@gmail.com.', 'Kontakt zu Ivanotechs. Nachrichten gehen an djforbian@gmail.com.', 'Contacter Ivanotechs. Les messages partent vers djforbian@gmail.com.'),
         ];
 

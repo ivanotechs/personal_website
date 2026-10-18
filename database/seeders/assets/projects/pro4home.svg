@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" role="img" aria-label="Pro4Home">
+  <rect width="40" height="40" rx="11.0" fill="#35614a"/>
+  <path d="M11.00 21.50 L20.00 13.00 L29.00 21.50" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M13.50 20.00 L13.50 27.50 L26.50 27.50 L26.50 20.00" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M17.650 27.500 L17.650 23.400 L17.665 23.176 L17.709 22.955 L17.782 22.739 L17.883 22.532 L18.010 22.336 L18.163 22.153 L18.338 21.986 L18.535 21.836 L18.750 21.707 L18.980 21.598 L19.224 21.512 L19.477 21.450 L19.737 21.413 L20.000 21.400 L20.263 21.413 L20.523 21.450 L20.776 21.512 L21.020 21.598 L21.250 21.707 L21.465 21.836 L21.662 21.986 L21.837 22.153 L21.990 22.336 L22.117 22.532 L22.218 22.739 L22.291 22.955 L22.335 23.176 L22.350 23.400 L22.350 27.500 Z" fill="#e6a23c"/>
+</svg>

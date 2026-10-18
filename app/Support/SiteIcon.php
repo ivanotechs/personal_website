@@ -10,9 +10,9 @@ class SiteIcon
 {
     public function store(Project $project): ?string
     {
-        $page = $project->url ?: $project->github_url;
+        $page = $this->pageUrl($project->url ?: $project->github_url);
 
-        if (! is_string($page) || ! preg_match('#^https?://#i', $page)) {
+        if ($page === null) {
             return null;
         }
 
@@ -33,6 +33,25 @@ class SiteIcon
         ])->save();
 
         return $path;
+    }
+
+    private function pageUrl(mixed $page): ?string
+    {
+        if (! is_string($page)) {
+            return null;
+        }
+
+        $page = trim($page);
+
+        if ($page === '') {
+            return null;
+        }
+
+        if (! preg_match('#^https?://#i', $page)) {
+            $page = 'https://'.ltrim($page, '/');
+        }
+
+        return filter_var($page, FILTER_VALIDATE_URL) ? $page : null;
     }
 
     /**
