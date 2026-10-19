@@ -2,8 +2,6 @@
 
 namespace App\Support;
 
-use Illuminate\Support\Facades\Storage;
-
 class PublicMedia
 {
     public static function url(?string $path): ?string
@@ -14,11 +12,41 @@ class PublicMedia
             return null;
         }
 
-        $version = Storage::disk('public')->exists($path)
-            ? Storage::disk('public')->lastModified($path)
-            : null;
+        self::publish($path);
 
-        return url('media/'.$path).($version ? '?v='.$version : '');
+        $file = public_path('storage/'.$path);
+        $version = is_file($file) ? filemtime($file) : null;
+
+        return url('storage/'.$path).($version ? '?v='.$version : '');
+    }
+
+    public static function publish(string $path): void
+    {
+        $path = self::normalize($path);
+
+        if ($path === null) {
+            return;
+        }
+
+        $target = public_path('storage/'.$path);
+
+        if (is_file($target)) {
+            return;
+        }
+
+        $source = storage_path('app/public/'.$path);
+
+        if (! is_file($source)) {
+            return;
+        }
+
+        $directory = dirname($target);
+
+        if (! is_dir($directory)) {
+            mkdir($directory, 0755, true);
+        }
+
+        copy($source, $target);
     }
 
     public static function normalize(?string $path): ?string

@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\MediaController;
 use App\Http\Controllers\SeoController;
 use App\Livewire\Admin\Account;
 use App\Livewire\Admin\Branding;
@@ -25,7 +24,6 @@ use App\Support\LocaleResolver;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/media/{path}', [MediaController::class, 'show'])->where('path', '.*')->name('media');
 Route::get('/robots.txt', [SeoController::class, 'robots']);
 Route::get('/sitemap.xml', [SeoController::class, 'sitemap']);
 

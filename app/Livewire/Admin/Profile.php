@@ -5,6 +5,7 @@ namespace App\Livewire\Admin;
 use App\Livewire\Page;
 use App\Models\PageSeo;
 use App\Models\Setting;
+use App\Support\PublicMedia;
 use Illuminate\Support\Facades\Storage;
 use Livewire\WithFileUploads;
 
@@ -195,9 +196,15 @@ class Profile extends Page
     {
         $previous = $setting->{$column};
         $path = $upload->store('brand', 'public');
+        PublicMedia::publish($path);
 
         if (is_string($previous) && $previous !== '' && $previous !== $path) {
             Storage::disk('public')->delete($previous);
+            $stored = storage_path('app/public/'.$previous);
+
+            if (is_file($stored) && realpath($stored) !== realpath(public_path('storage/'.$previous))) {
+                unlink($stored);
+            }
         }
 
         return $path;
