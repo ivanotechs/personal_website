@@ -15,10 +15,18 @@
                 <label class="grid gap-2 text-sm font-semibold">Country<input class="field" wire:model="country"></label>
                 <label class="grid gap-2 text-sm font-semibold">Birth date<input class="field" type="date" wire:model="birth_date"></label>
             </div>
-            <label class="grid gap-2 text-sm font-semibold">Portrait
-                <input class="field" type="file" wire:model="portrait" accept="image/*">
-            </label>
-            @error('portrait') <span class="text-sm text-red-500">{{ $message }}</span> @enderror
+            <div class="grid gap-3">
+                @if ($portrait)
+                    <img src="{{ $portrait->temporaryUrl() }}" alt="" class="size-28 rounded-2xl object-cover">
+                @elseif ($settings?->portraitUrl())
+                    <img src="{{ $settings->portraitUrl() }}" alt="" class="size-28 rounded-2xl object-cover">
+                @endif
+                <label class="grid gap-2 text-sm font-semibold">Portrait
+                    <input class="field" type="file" wire:model="portrait" accept="image/jpeg,image/png,image/webp,image/gif">
+                </label>
+                <p wire:loading wire:target="portrait" class="text-sm text-muted">{{ __('site.admin.uploading') }}</p>
+                @error('portrait') <span class="text-sm text-red-500">{{ $message }}</span> @enderror
+            </div>
         </section>
 
         <section class="surface grid gap-4 p-5">
@@ -84,6 +92,6 @@
             @endforeach
         </section>
 
-        <x-action-button type="submit" class="btn-primary w-fit" target="save">{{ __('site.admin.save') }}</x-action-button>
+        <x-action-button type="submit" class="btn-primary w-fit" target="portrait,save">{{ __('site.admin.save') }}</x-action-button>
     </form>
 </div>

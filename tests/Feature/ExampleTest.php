@@ -2,12 +2,15 @@
 
 namespace Tests\Feature;
 
+use App\Livewire\Admin\Profile;
 use App\Livewire\Site\Contact;
 use App\Mail\ContactMessageMail;
 use App\Models\ContactMessage;
 use App\Models\Project;
+use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
@@ -56,11 +59,39 @@ class ExampleTest extends TestCase
             ->set('message', 'Hello from the form')
             ->call('submit')
             ->assertHasNoErrors()
-            ->assertSet('sent', true)
-            ->assertDispatched('toast');
+            ->assertRedirect(route('contact.sent', ['locale' => 'en']));
+
+        $this->get('/en/contact/sent')
+            ->assertOk()
+            ->assertSee('Your message has been sent.');
+
+        $this->get('/en/contact/sent')->assertRedirect('/en/contact');
 
         Mail::assertSent(ContactMessageMail::class, function ($mail) {
             return $mail->hasTo('djforbian@gmail.com');
         });
+    }
+
+    public function test_a_new_portrait_replaces_the_picture_on_the_site(): void
+    {
+        $this->seed();
+        Storage::fake('public');
+        Storage::disk('public')->put('brand/portrait.jpg', 'old-portrait');
+
+        $user = User::query()->where('email', 'djforbian@gmail.com')->first();
+
+        Livewire::actingAs($user)
+            ->test(Profile::class)
+            ->set('portrait', UploadedFile::fake()->image('face.jpg', 40, 50))
+            ->assertHasNoErrors();
+
+        $path = Setting::query()->value('portrait_path');
+
+        $this->assertNotSame('brand/portrait.jpg', $path);
+        $this->assertTrue(Storage::disk('public')->exists($path));
+        $this->assertFalse(Storage::disk('public')->exists('brand/portrait.jpg'));
+        $this->get('/en')->assertSee('storage/'.$path, false);
+        $this->get('/en/about')->assertSee('storage/'.$path, false);
+        $this->get('/en/cv')->assertSee('storage/'.$path, false);
     }
 }

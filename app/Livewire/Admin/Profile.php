@@ -5,6 +5,7 @@ namespace App\Livewire\Admin;
 use App\Livewire\Page;
 use App\Models\PageSeo;
 use App\Models\Setting;
+use Illuminate\Support\Facades\Storage;
 use Livewire\WithFileUploads;
 
 class Profile extends Page
@@ -130,7 +131,7 @@ class Profile extends Page
             'full_name' => ['required', 'string', 'max:160'],
             'handle' => ['required', 'string', 'max:80'],
             'public_email' => ['required', 'email', 'max:160'],
-            'portrait' => ['nullable', 'image', 'max:4096'],
+            'portrait' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,gif', 'max:8192'],
         ]);
 
         $setting = Setting::query()->firstOrFail();
@@ -162,7 +163,8 @@ class Profile extends Page
         ];
 
         if ($this->portrait) {
-            $data['portrait_path'] = $this->portrait->store('brand', 'public');
+            $data['portrait_path'] = $this->replaceMedia($setting, 'portrait_path', $this->portrait);
+            $this->portrait = null;
         }
 
         $setting->update($data);
@@ -172,8 +174,33 @@ class Profile extends Page
         }
 
         $this->saved = true;
+        $this->toast(__('site.toast.saved'));
+    }
+
+    public function updatedPortrait(): void
+    {
+        $this->validate([
+            'portrait' => ['image', 'mimes:jpg,jpeg,png,webp,gif', 'max:8192'],
+        ]);
+
+        $setting = Setting::query()->firstOrFail();
+        $setting->update([
+            'portrait_path' => $this->replaceMedia($setting, 'portrait_path', $this->portrait),
+        ]);
         $this->portrait = null;
         $this->toast(__('site.toast.saved'));
+    }
+
+    private function replaceMedia(Setting $setting, string $column, mixed $upload): string
+    {
+        $previous = $setting->{$column};
+        $path = $upload->store('brand', 'public');
+
+        if (is_string($previous) && $previous !== '' && $previous !== $path) {
+            Storage::disk('public')->delete($previous);
+        }
+
+        return $path;
     }
 
     protected function viewName(): string

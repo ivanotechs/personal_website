@@ -21,14 +21,7 @@
         </div>
 
         <div class="surface p-5 md:p-7">
-            @if ($sent)
-                <div class="rounded-2xl bg-accent/10 p-6">
-                    <h2 class="text-2xl font-extrabold">{{ __('site.contact.sent_title') }}</h2>
-                    <p class="mt-2 text-muted">{{ __('site.contact.sent_body') }}</p>
-                    <x-action-button class="btn-primary mt-6" wire:click="another" target="another">{{ __('site.contact.another') }}</x-action-button>
-                </div>
-            @else
-                <form wire:submit="submit" class="grid gap-4">
+            <form wire:submit="submit" class="grid gap-4">
                     <label class="grid gap-2 text-sm font-semibold">
                         {{ __('site.contact.name') }}
                         <input class="field" type="text" wire:model="name" autocomplete="name">
@@ -50,8 +43,7 @@
                         @error('message') <span class="text-sm font-medium text-red-500">{{ $message }}</span> @enderror
                     </label>
                     <x-action-button type="submit" class="btn-primary" target="submit">{{ __('site.contact.send') }}</x-action-button>
-                </form>
-            @endif
+            </form>
         </div>
     </section>
 </div>

@@ -15,6 +15,7 @@ use App\Livewire\Admin\Skills;
 use App\Livewire\Admin\Themes;
 use App\Livewire\Site\About;
 use App\Livewire\Site\Contact;
+use App\Livewire\Site\ContactSent;
 use App\Livewire\Site\Cv;
 use App\Livewire\Site\Home;
 use App\Livewire\Site\Projects;
@@ -48,6 +49,7 @@ Route::prefix('{locale}')
         Route::get('/projects', Projects::class)->name('projects');
         Route::get('/projects/{project}', ProjectShow::class)->name('projects.show')->where('project', '[a-z0-9\-]+');
         Route::get('/contact', Contact::class)->name('contact');
+        Route::get('/contact/sent', ContactSent::class)->name('contact.sent');
 
         Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/login', Login::class)->name('login')->middleware('guest');

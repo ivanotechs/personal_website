@@ -50,7 +50,13 @@ abstract class Page extends Component
             ->layout($this->layout(), [
                 'title' => $this->title(),
                 'description' => $this->description(),
+                'index' => $this->shouldIndex(),
             ]);
+    }
+
+    protected function shouldIndex(): bool
+    {
+        return true;
     }
 
     protected function viewData(): array

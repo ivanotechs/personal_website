@@ -19,14 +19,6 @@ class Contact extends Page
 
     public string $message = '';
 
-    public bool $sent = false;
-
-    public function another(): void
-    {
-        $this->sent = false;
-        $this->toast(__('site.toast.contact_another'), 'info');
-    }
-
     public function submit(): void
     {
         $key = 'contact:'.request()->ip();
@@ -69,8 +61,9 @@ class Contact extends Page
 
         RateLimiter::hit($key, 3600);
         $this->reset('name', 'email', 'subject', 'message');
-        $this->sent = true;
-        $this->toast(__('site.toast.contact_sent'));
+        session()->flash('contact.sent', true);
+        $this->toastAfterRedirect(__('site.toast.contact_sent'));
+        $this->redirectRoute('contact.sent', ['locale' => app()->getLocale()], navigate: true);
     }
 
     protected function viewName(): string

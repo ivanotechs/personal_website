@@ -183,8 +183,8 @@ return [
         'subject' => 'Sujet',
         'message' => 'Message',
         'send' => 'Envoyer',
-        'sent_title' => 'Le mot est prêt.',
-        'sent_body' => 'Rien n’a été enregistré ni envoyé. Cet écran confirme seulement le formulaire.',
+        'sent_title' => 'Votre message a été envoyé.',
+        'sent_body' => 'Il est enregistré et en route. Vous pouvez écrire un autre message quand vous voulez.',
         'another' => 'En écrire un autre',
         'aside_title' => 'De bonnes raisons d’écrire',
         'points' => [
@@ -210,6 +210,7 @@ return [
         'preview' => 'Connecté. Les modifications sont enregistrées sur le site dans les trois langues.',
         'saved' => 'Enregistré.',
         'save' => 'Enregistrer',
+        'uploading' => 'Téléversement de l’image…',
         'login' => [
             'title' => 'Connexion admin',
             'email' => 'E-mail',

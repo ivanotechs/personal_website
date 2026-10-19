@@ -183,8 +183,8 @@ return [
         'subject' => 'Subject',
         'message' => 'Message',
         'send' => 'Send note',
-        'sent_title' => 'The note is ready.',
-        'sent_body' => 'Nothing was stored or emailed. This screen only confirms the form.',
+        'sent_title' => 'Your message has been sent.',
+        'sent_body' => 'It is stored and on its way. You can write another note whenever you want.',
         'another' => 'Write another',
         'aside_title' => 'Good reasons to write',
         'points' => [
@@ -210,6 +210,7 @@ return [
         'preview' => 'Signed in. Edits are saved on the site in all three languages.',
         'saved' => 'Saved.',
         'save' => 'Save',
+        'uploading' => 'Uploading the picture…',
         'login' => [
             'title' => 'Admin sign in',
             'email' => 'Email',

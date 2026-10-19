@@ -55,7 +55,14 @@ class Setting extends Model
 
     public function mediaUrl(?string $path): ?string
     {
-        return $path ? url('storage/'.$path) : null;
+        if (! $path) {
+            return null;
+        }
+
+        $file = storage_path('app/public/'.$path);
+        $version = is_file($file) ? filemtime($file) : $this->updated_at?->getTimestamp();
+
+        return url('storage/'.$path).($version ? '?v='.$version : '');
     }
 
     public function logoUrl(): ?string

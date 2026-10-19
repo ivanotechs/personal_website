@@ -183,8 +183,8 @@ return [
         'subject' => 'Betreff',
         'message' => 'Nachricht',
         'send' => 'Nachricht senden',
-        'sent_title' => 'Die Nachricht ist bereit.',
-        'sent_body' => 'Nichts wurde gespeichert oder verschickt. Dieser Screen bestätigt nur das Formular.',
+        'sent_title' => 'Ihre Nachricht wurde gesendet.',
+        'sent_body' => 'Sie ist gespeichert und unterwegs. Sie können jederzeit eine weitere Nachricht schreiben.',
         'another' => 'Weitere schreiben',
         'aside_title' => 'Gute Gründe zu schreiben',
         'points' => [
@@ -210,6 +210,7 @@ return [
         'preview' => 'Angemeldet. Änderungen werden auf der Seite in allen drei Sprachen gespeichert.',
         'saved' => 'Gespeichert.',
         'save' => 'Speichern',
+        'uploading' => 'Das Bild wird hochgeladen…',
         'login' => [
             'title' => 'Admin-Anmeldung',
             'email' => 'E-Mail',

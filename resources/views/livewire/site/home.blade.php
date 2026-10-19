@@ -79,7 +79,7 @@
         <div class="overflow-hidden rounded-[2rem] bg-accent px-6 py-10 text-white md:px-10">
             <h2 class="max-w-xl text-3xl font-extrabold tracking-tight">{{ __('site.home.cta_title') }}</h2>
             <p class="mt-3 max-w-xl text-white/80">{{ $settings?->text('availability') }}</p>
-            <a href="{{ route('contact', ['locale' => app()->getLocale()]) }}" class="btn mt-6 bg-white text-ink" wire:navigate>{{ __('site.home.cta_button') }}</a>
+            <a href="{{ route('contact', ['locale' => app()->getLocale()]) }}" class="btn mt-6 bg-white text-accent" wire:navigate>{{ __('site.home.cta_button') }}</a>
         </div>
     </section>
 </div>

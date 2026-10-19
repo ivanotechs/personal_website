@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{{ $title ?? ($settings->site_name ?? 'Ivanotechs') }}</title>
-        <x-seo :title="$title ?? null" :description="$description ?? null" :index="true" />
+        <x-seo :title="$title ?? null" :description="$description ?? null" :index="$index ?? true" />
         @fonts
         @include('partials.theme-boot')
         @vite(['resources/css/app.css', 'resources/js/app.js'])

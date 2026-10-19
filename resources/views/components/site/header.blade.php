@@ -19,8 +19,8 @@
                     wire:navigate
                     @class([
                         'rounded-xl px-3 py-2 text-sm font-semibold transition',
-                        'bg-elevated text-ink shadow-sm' => request()->routeIs($link['route']),
-                        'text-muted hover:text-ink' => ! request()->routeIs($link['route']),
+                        'bg-elevated text-ink shadow-sm' => request()->routeIs($link['route']) || ($link['route'] === 'contact' && request()->routeIs('contact.sent')),
+                        'text-muted hover:text-ink' => ! (request()->routeIs($link['route']) || ($link['route'] === 'contact' && request()->routeIs('contact.sent'))),
                     ])
                 >
                     {{ $link['label'] }}
@@ -69,7 +69,7 @@
                     href="{{ route($link['route'], ['locale' => app()->getLocale()]) }}"
                     wire:navigate
                     @click="$store.ui.menu = false"
-                    class="rounded-xl px-3 py-3 text-base font-semibold {{ request()->routeIs($link['route']) ? 'bg-elevated' : '' }}"
+                    class="rounded-xl px-3 py-3 text-base font-semibold {{ request()->routeIs($link['route']) || ($link['route'] === 'contact' && request()->routeIs('contact.sent')) ? 'bg-elevated' : '' }}"
                 >
                     {{ $link['label'] }}
                 </a>
