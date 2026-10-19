@@ -90,8 +90,9 @@ class ExampleTest extends TestCase
         $this->assertNotSame('brand/portrait.jpg', $path);
         $this->assertTrue(Storage::disk('public')->exists($path));
         $this->assertFalse(Storage::disk('public')->exists('brand/portrait.jpg'));
-        $this->get('/en')->assertSee('storage/'.$path, false);
-        $this->get('/en/about')->assertSee('storage/'.$path, false);
-        $this->get('/en/cv')->assertSee('storage/'.$path, false);
+        $this->get('/en')->assertSee('media/'.$path, false);
+        $this->get('/en/about')->assertSee('media/'.$path, false);
+        $this->get('/en/cv')->assertSee('media/'.$path, false);
+        $this->get('/media/'.$path)->assertOk();
     }
 }

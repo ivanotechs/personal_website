@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\HasTranslations;
+use App\Support\PublicMedia;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
@@ -32,6 +33,6 @@ class Project extends Model
 
     public function iconUrl(): ?string
     {
-        return $this->icon_path ? url('storage/'.$this->icon_path) : null;
+        return PublicMedia::url($this->icon_path);
     }
 }

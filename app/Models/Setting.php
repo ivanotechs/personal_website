@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\HasTranslations;
+use App\Support\PublicMedia;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
@@ -55,14 +56,7 @@ class Setting extends Model
 
     public function mediaUrl(?string $path): ?string
     {
-        if (! $path) {
-            return null;
-        }
-
-        $file = storage_path('app/public/'.$path);
-        $version = is_file($file) ? filemtime($file) : $this->updated_at?->getTimestamp();
-
-        return url('storage/'.$path).($version ? '?v='.$version : '');
+        return PublicMedia::url($path);
     }
 
     public function logoUrl(): ?string
